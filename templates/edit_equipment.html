@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Жабдықты өңдеу{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="text-center mb-4">Жабдықты өңдеу</h1>
+    <form method="POST" action="{{ url_for('equipment_bp.edit_equipment', id=equipment.id) }}">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="name" class="form-label">Жабдық атауы:</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ equipment.name }}" required>
+            </div>
+            <div class="col-md-6">
+                <label for="type" class="form-label">Жабдық түрі:</label>
+                <select id="type" name="type" class="form-select" required>
+                    {% for type in types %}
+                    <option value="{{ type }}" {% if equipment.type == type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="status" class="form-label">Мәртебесі:</label>
+                <select id="status" name="status" class="form-select" required>
+                    {% for status in statuses %}
+                    <option value="{{ status }}" {% if equipment.status == status %}selected{% endif %}>{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="activation_date" class="form-label">Іске қосу күні:</label>
+                <input type="date" id="activation_date" name="activation_date" class="form-control" value="{{ equipment.activation_date }}" required>
+            </div>
+        </div>
+        <div class="text-end">
+            <button type="submit" class="btn btn-success">Сақтау</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

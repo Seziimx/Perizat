@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Бет табылмады{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="display-1 text-danger">404</h1>
+    <h2 class="mb-4">Бет табылмады</h2>
+    <p class="mb-4">Кешіріңіз, сіз іздеген бет табылмады. Мүмкін, ол жойылған немесе сілтеме дұрыс емес.</p>
+    <a href="{{ url_for('dashboard_bp.dashboard') }}" class="btn btn-primary">Басты бетке оралу</a>
+</div>
+{% endblock %}

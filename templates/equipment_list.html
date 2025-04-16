@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Жабдықтар тізімі{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="text-center">Жабдықтар тізімі</h1>
+
+    <!-- Summary Section -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Барлық жабдықтар</h5>
+                    <p class="card-text">{{ equipment_list|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Пайдалануда</h5>
+                    <p class="card-text">{{ equipment_list|selectattr('status', 'equalto', 'Пайдалануда')|list|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Жөндеуде</h5>
+                    <p class="card-text">{{ equipment_list|selectattr('status', 'equalto', 'Жөндеуде')|list|length }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <form method="GET" action="{{ url_for('equipment_bp.equipment_list') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="type" class="form-label">Түрі:</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="">Барлығы</option>
+                    <option value="Бұрғылау жабдығы">🏗️ Бұрғылау жабдығы</option>
+                    <option value="Өндіру жабдығы">💧 Өндіру жабдығы</option>
+                    <option value="Ұңғыма сағасының жабдығы">🔩 Ұңғыма сағасының жабдығы</option>
+                    <option value="Циркуляция және айдау">🔁 Циркуляция және айдау</option>
+                    <option value="Электр жабдығы">🔌 Электр жабдығы</option>
+                    <option value="Сыйымдылық жабдығы">🛢️ Сыйымдылық жабдығы</option>
+                    <option value="Технологиялық блоктар">🔧 Технологиялық блоктар</option>
+                    <option value="Көмекші жабдық">🚜 Көмекші жабдық</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="location" class="form-label">Орналасуы:</label>
+                <select id="location" name="location" class="form-select">
+                    <option value="">Барлығы</option>
+                    {% for location in locations %}
+                    <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="status" class="form-label">Мәртебесі:</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="">Барлығы</option>
+                    <option value="Пайдалануда">Пайдалануда</option>
+                    <option value="Жөндеуде">Жөндеуде</option>
+                    <option value="Тізімнен шығарылған">Тізімнен шығарылған</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Сүзгіні қолдану</button>
+    </form>
+
+    <!-- Equipment Table -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Атауы</th>
+                    <th>Түрі</th>
+                    <th>Мәртебесі</th>
+                    <th>Орналасуы</th>
+                    <th>Түгендеу нөмірі</th>
+                    <th>Іске қосу күні</th>
+                    <th>Файлдар</th>
+                    <th>QR Код</th>
+                    <th>Әрекеттер</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipment in equipment_list %}
+                <tr>
+                    <td>{{ equipment.name }}</td>
+                    <td>{{ equipment.type }}</td>
+                    <td>
+                        {% if session['role'] == 'admin' %}
+                        <form method="POST" action="{{ url_for('equipment_bp.update_status', id=equipment.id) }}" class="d-inline">
+                            <select name="status" class="form-select form-select-sm status-dropdown" onchange="this.form.submit()">
+                                <option value="Пайдалануда" {% if equipment.status == 'Пайдалануда' %}selected{% endif %}>🟢 Пайдалануда</option>
+                                <option value="Жөндеуде" {% if equipment.status == 'Жөндеуде' %}selected{% endif %}>🔴 Жөндеуде</option>
+                                <option value="Тізімнен шығарылған" {% if equipment.status == 'Тізімнен шығарылған' %}selected{% endif %}>⚪ Тізімнен шығарылған</option>
+                            </select>
+                        </form>
+                        {% else %}
+                        {% if equipment.status == 'Пайдалануда' %}
+                        <span class="badge bg-success">🟢 Пайдалануда</span>
+                        {% elif equipment.status == 'Жөндеуде' %}
+                        <span class="badge bg-danger">🔴 Жөндеуде</span>
+                        {% elif equipment.status == 'Тізімнен шығарылған' %}
+                        <span class="badge bg-secondary">⚪ Тізімнен шығарылған</span>
+                        {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>{{ equipment.location }}</td>
+                    <td>{{ equipment.inventory_number }}</td>
+                    <td>{{ equipment.activation_date }}</td>
+                    <td>
+                        {% if equipment.files %}
+                        <ul class="list-unstyled">
+                            {% for file in equipment.files %}
+                            <li>
+                                <a href="{{ url_for('static', filename='uploads/' ~ file) }}" target="_blank" class="badge bg-secondary">{{ file }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <span class="text-muted">Файлдар жоқ</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('equipment_bp.generate_qr', id=equipment.id) }}" class="btn btn-outline-secondary btn-sm">QR Код</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#logs-{{ equipment.id }}" aria-expanded="false" aria-controls="logs-{{ equipment.id }}">
+                            Тарихты көрсету
+                        </button>
+                        <div class="collapse" id="logs-{{ equipment.id }}">
+                            <ul class="mt-2">
+                                {% for log in equipment.logs %}
+                                <li>{{ log.timestamp }}: {{ log.event }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .status-dropdown {
+        width: auto;
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+        background-color: #f8f9fa;
+        color: #495057;
+    }
+
+    .status-dropdown:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .status-dropdown option {
+        padding: 0.5rem;
+    }
+</style>
+{% endblock %}

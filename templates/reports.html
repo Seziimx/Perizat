@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Есептер{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="text-center mb-4">Есептер</h1>
+
+    <!-- Summary Section -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="text-white bg-primary p-3 rounded">
+                <h5>Барлық жабдықтар</h5>
+                <p class="fs-4">{{ equipment_list|length }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-white bg-success p-3 rounded">
+                <h5>Пайдалануда</h5>
+                <p class="fs-4">{{ equipment_list|selectattr('status', 'equalto', 'Пайдалануда')|list|length }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-white bg-danger p-3 rounded">
+                <h5>Жөндеуде</h5>
+                <p class="fs-4">{{ equipment_list|selectattr('status', 'equalto', 'Жөндеуде')|list|length }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Button -->
+    <div class="text-end mb-3">
+        <a href="{{ url_for('report_bp.export_word') }}" class="btn btn-success">Word-ке экспорттау (сүзілген)</a>
+        <a href="{{ url_for('report_bp.export_full_word') }}" class="btn btn-secondary">Толық есепті жүктеу</a>
+    </div>
+
+    <!-- Filters -->
+    <form method="GET" action="{{ url_for('report_bp.reports_page') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="type" class="form-label">Жабдық түрі:</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="" disabled selected>Жабдық түрін таңдаңыз</option>
+                    <option value="Бұрғылау жабдығы">🏗️ Бұрғылау жабдығы</option>
+                    <option value="Өндіру жабдығы">💧 Өндіру жабдығы</option>
+                    <option value="Ұңғыма сағасының жабдығы">🔩 Ұңғыма сағасының жабдығы</option>
+                    <option value="Циркуляция және айдау">🔁 Циркуляция және айдау</option>
+                    <option value="Электр жабдығы">🔌 Электр жабдығы</option>
+                    <option value="Сыйымдылық жабдығы">🛢️ Сыйымдылық жабдығы</option>
+                    <option value="Технологиялық блоктар">🔧 Технологиялық блоктар</option>
+                    <option value="Көмекші жабдық">🚜 Көмекші жабдық</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="location" class="form-label">Орналасуы бойынша сүзгі:</label>
+                <input type="text" id="location" name="location" class="form-control" value="{{ request.args.get('location', '') }}">
+            </div>
+            <div class="col-md-3">
+                <label for="date_from" class="form-label">Күні бастап:</label>
+                <input type="date" id="date_from" name="date_from" class="form-control" value="{{ request.args.get('date_from', '') }}">
+            </div>
+            <div class="col-md-3">
+                <label for="date_to" class="form-label">Күні дейін:</label>
+                <input type="date" id="date_to" name="date_to" class="form-control" value="{{ request.args.get('date_to', '') }}">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-primary w-100" type="submit">Сүзгіні қолдану</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Filtered Equipment Table -->
+    <h2>Сүзілген жабдықтар тізімі</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Атауы</th>
+                    <th>Түрі</th>
+                    <th>Мәртебесі</th>
+                    <th>Орналасуы</th>
+                    <th>Файлдар</th>
+                    <th>Тарихы</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if equipment_list %}
+                {% for equipment in equipment_list %}
+                <tr>
+                    <td>{{ equipment.name }}</td>
+                    <td>{{ equipment.type }}</td>
+                    <td>
+                        {% if equipment.status == 'Пайдалануда' %}
+                        🟢 Пайдалануда
+                        {% elif equipment.status == 'Жөндеуде' %}
+                        🔴 Жөндеуде
+                        {% elif equipment.status == 'Тізімнен шығарылған' %}
+                        ⚪ Тізімнен шығарылған
+                        {% endif %}
+                    </td>
+                    <td>{{ equipment.location }}</td>
+                    <td>
+                        {% if equipment.files %}
+                        <ul class="list-unstyled">
+                            {% for file in equipment.files %}
+                            <li>
+                                <a href="{{ url_for('static', filename='uploads/' ~ file) }}" target="_blank" class="badge bg-secondary">{{ file }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <span class="text-muted">Файлдар жоқ</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#logs-{{ equipment.id }}" aria-expanded="false" aria-controls="logs-{{ equipment.id }}">
+                            Тарихты көрсету
+                        </button>
+                        <div class="collapse" id="logs-{{ equipment.id }}">
+                            <ul class="mt-2">
+                                {% for log in equipment.logs %}
+                                <li>{{ log.timestamp }}: {{ log.event }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Көрсетілетін деректер жоқ</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

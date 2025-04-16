@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Жабдық қосу{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="text-center mb-4">Жабдық қосу</h1>
+    <form method="POST" action="{{ url_for('equipment_bp.add_equipment') }}">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="equipment_type" class="form-label">Жабдық түрі:</label>
+                <select id="equipment_type" name="type" class="form-select" onchange="updateEquipmentNames()" required>
+                    <option value="" disabled selected>Жабдық түрін таңдаңыз</option>
+                    <option value="Бұрғылау жабдығы">🏗️ Бұрғылау жабдығы</option>
+                    <option value="Өндіру жабдығы">💧 Өндіру жабдығы</option>
+                    <option value="Ұңғыма сағасының жабдығы">🔩 Ұңғыма сағасының жабдығы</option>
+                    <option value="Циркуляция және айдау">🔁 Циркуляция және айдау</option>
+                    <option value="Электр жабдығы">🔌 Электр жабдығы</option>
+                    <option value="Сыйымдылық жабдығы">🛢️ Сыйымдылық жабдығы</option>
+                    <option value="Технологиялық блоктар">🔧 Технологиялық блоктар</option>
+                    <option value="Көмекші жабдық">🚜 Көмекші жабдық</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="equipment_name" class="form-label">Жабдық атауы:</label>
+                <select id="equipment_name" name="name" class="form-select" required>
+                    <option value="" disabled selected>Алдымен жабдық түрін таңдаңыз</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="location" class="form-label">Орналасуы:</label>
+                <input type="text" id="location" name="location" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="status" class="form-label">Мәртебесі:</label>
+                <select id="status" name="status" class="form-select" required>
+                    <option value="Пайдалануда">Пайдалануда</option>
+                    <option value="Жөндеуде">Жөндеуде</option>
+                    <option value="Тізімнен шығарылған">Тізімнен шығарылған</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="activation_date" class="form-label">Іске қосу күні:</label>
+                <input type="date" id="activation_date" name="activation_date" class="form-control" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="inventory_number" class="form-label">Түгендеу нөмірі:</label>
+                <input type="text" id="inventory_number" name="inventory_number" class="form-control" required>
+            </div>
+        </div>
+        <div class="text-end">
+            <button type="submit" class="btn btn-success">Жабдық қосу</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    const equipmentOptions = {
+        "Бұрғылау жабдығы": [
+            "Бұрғылау қондырғысы",
+            "Бұрғылау насостары",
+            "Бұрғылау лебедкасы",
+            "Бұрғылау мұнарасы",
+            "Ротор"
+        ],
+        "Өндіру жабдығы": [
+            "Штангалық насос",
+            "Центробежный насос",
+            "Электроцентробежный насос",
+            "Глубинный насос",
+            "Ұңғыма компрессоры"
+        ],
+        "Ұңғыма сағасының жабдығы": [
+            "Фонтанды арматура",
+            "Ұңғыма сағасының жабдығы",
+            "Қауіпсіздік клапаны",
+            "Ұңғыма манометрі"
+        ],
+        "Циркуляция және айдау": [
+            "Циркуляциялық насос",
+            "Жоғары қысымды насос",
+            "ППД насостары",
+            "Газ сепараторы",
+            "Су бөлгіш"
+        ],
+        "Электр жабдығы": [
+            "Электр жетегі ЭПУ-400",
+            "Жиілік түрлендіргіші",
+            "Электр басқару қалқаны",
+            "Трансформатор"
+        ],
+        "Сыйымдылық жабдығы": [
+            "50м³ қысым сыйымдылығы",
+            "Мұнай резервуары",
+            "Су сыйымдылығы",
+            "Сепарациялық сыйымдылық"
+        ],
+        "Технологиялық блоктар": [
+            "Жоғары қысымды манифольд",
+            "Мұнай өлшеу торабы (МӨТ)",
+            "Сепарация блогы",
+            "Химиялық дозатор"
+        ],
+        "Көмекші жабдық": [
+            "Лебедка",
+            "Кран-балка",
+            "Жылжымалы компрессор",
+            "Генератор"
+        ]
+    };
+
+    function updateEquipmentNames() {
+        const typeSelect = document.getElementById('equipment_type');
+        const nameSelect = document.getElementById('equipment_name');
+        const selectedType = typeSelect.value;
+
+        nameSelect.innerHTML = '<option value="" disabled selected>Жабдық атауын таңдаңыз</option>';
+
+        if (equipmentOptions[selectedType]) {
+            equipmentOptions[selectedType].forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                nameSelect.appendChild(option);
+            });
+        }
+    }
+</script>
+{% endblock %}

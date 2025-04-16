@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}🔧 3D Жабдықтарды Визуализациялау{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="text-center mb-4">🔧 3D жабдықтардың визуализациясы</h1>
+
+    <div class="mb-4">
+        <label for="model-select" class="form-label">Жабдықты таңдаңыз:</label>
+        <select id="model-select" class="form-select" onchange="updateModel()">
+            <option value="8c04a2222517483597fb420ea4739bb7">Бұрғылау қондырғысы</option>
+            <option value="dbb541d07ab44239a829e016cd6b7782">Штангалық насос</option>
+            <option value="30d8f0917cfc41ebaf6a331ee552e93b">Ұңғыма компрессоры</option>
+            <option value="19d028eb4e504314bf909a381b6796eb">Электр жетегі ЭПУ-400</option>
+            <option value="cec1aedc79c841bb9e5bf747ceec6759">50м³ қысым ыдысы</option>
+            <option value="7fbd051ed74140c0ac85a6e04b2628c3">Жоғары қысымды манифольд</option>
+            <option value="eeb2cf572ae64a2f8954283083c0fbde">Циркуляциялық насос</option>
+            <option value="9a7a10032fad4ebe9896b4ff90056641">Газ сепараторы</option>
+        </select>
+    </div>
+
+    <div class="text-center">
+        <iframe id="sketchfab-frame" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+<script>
+    function updateModel() {
+        const modelId = document.getElementById('model-select').value;
+        const iframe = document.getElementById('sketchfab-frame');
+        iframe.src = `https://sketchfab.com/models/${modelId}/embed`;
+    }
+    // Load the initial model
+    updateModel();
+</script>
+{% endblock %}

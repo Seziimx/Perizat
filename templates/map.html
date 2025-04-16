@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Equipment Map{% endblock %}
+
+{% block content %}
+<div id="map" style="height: 500px;"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
+
+    var equipmentLocations = [
+        {% for equipment in equipment_list %}
+        {name: "{{ equipment.name }}", lat: 51.505, lng: -0.09}, // Replace with real coordinates
+        {% endfor %}
+    ];
+
+    equipmentLocations.forEach(function(equipment) {
+        L.marker([equipment.lat, equipment.lng]).addTo(map)
+            .bindPopup(equipment.name);
+    });
+</script>
+{% endblock %}

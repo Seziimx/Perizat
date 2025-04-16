@@ -1,0 +1,13 @@
+# .gitignore
+__pycache__/
+*.pyc
+instance/
+.env
+venv/
+*.db
+*.sqlite3
+*.log
+*.bak
+*.swp
+.idea/
+*.vscode/

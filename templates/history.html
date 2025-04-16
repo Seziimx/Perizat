@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Жабдықтар тарихы{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Жабдықтар тарихы</h1>
+    <p class="text-end text-muted">Көрсетілген күні: {{ current_date }}</p> <!-- Added current date -->
+    <ul class="list-group">
+        {% for equipment in equipment_list %}
+        <li class="list-group-item">
+            <strong>
+                {% if equipment.status == 'Пайдалануда' %}
+                🟢
+                {% elif equipment.status == 'Жөндеуде' %}
+                🔴
+                {% elif equipment.status == 'Тізімнен шығарылған' %}
+                ⚪
+                {% endif %}
+                {{ equipment.name }}
+            </strong> ({{ equipment.type }}, {{ equipment.status }})
+            <p class="text-muted mb-2">Күні: {{ equipment.activation_date }}</p> <!-- Added date -->
+            <ul class="mt-2">
+                {% for log in equipment.logs %}
+                <li>{{ log.timestamp }}: {{ log.event }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

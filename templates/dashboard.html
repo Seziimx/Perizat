@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Басқару панелі{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 class="text-center">Басқару панелі</h1>
+
+    <!-- Filters -->
+    <form method="GET" action="{{ url_for('dashboard_bp.dashboard') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="type" class="form-label">Түрі:</label>
+                <select id="type" name="type" class="form-select">
+                    <option value="">Барлығы</option>
+                    <option value="Бұрғылау жабдығы">🏗️ Бұрғылау жабдығы</option>
+                    <option value="Өндіру жабдығы">💧 Өндіру жабдығы</option>
+                    <option value="Ұңғыма сағасының жабдығы">🔩 Ұңғыма сағасының жабдығы</option>
+                    <option value="Циркуляция және айдау">🔁 Циркуляция және айдау</option>
+                    <option value="Электр жабдығы">🔌 Электр жабдығы</option>
+                    <option value="Сыйымдылық жабдығы">🛢️ Сыйымдылық жабдығы</option>
+                    <option value="Технологиялық блоктар">🔧 Технологиялық блоктар</option>
+                    <option value="Көмекші жабдық">🚜 Көмекші жабдық</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="status" class="form-label">Мәртебесі:</label>
+                <select id="status" name="status" class="form-select">
+                    <option value="Барлығы" {% if selected_status == 'Барлығы' or not selected_status %}selected{% endif %}>Барлығы</option>
+                    <option value="Пайдалануда" {% if selected_status == 'Пайдалануда' %}selected{% endif %}>Пайдалануда</option>
+                    <option value="Жөндеуде" {% if selected_status == 'Жөндеуде' %}selected{% endif %}>Жөндеуде</option>
+                    <option value="Тізімнен шығарылған" {% if selected_status == 'Тізімнен шығарылған' %}selected{% endif %}>Тізімнен шығарылған</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="location" class="form-label">Орналасуы:</label>
+                <select id="location" name="location" class="form-select">
+                    <option value="Барлығы" {% if selected_location == 'Барлығы' or not selected_location %}selected{% endif %}>Барлығы</option>
+                    {% for location in locations %}
+                    <option value="{{ location }}" {% if selected_location == location %}selected{% endif %}>{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Сүзгіні қолдану</button>
+    </form>
+
+    <!-- Filtered Equipment List -->
+    <h2>Жабдықтар тізімі</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Атауы</th>
+                    <th>Түрі</th>
+                    <th>Мәртебесі</th>
+                    <th>Орналасуы</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipment in equipment_list %}
+                <tr>
+                    <td>{{ equipment.name }}</td>
+                    <td>{{ equipment.type }}</td>
+                    <td>
+                        {% if equipment.status == 'Пайдалануда' %}
+                        🟢 Пайдалануда
+                        {% elif equipment.status == 'Жөндеуде' %}
+                        🔴 Жөндеуде
+                        {% elif equipment.status == 'Тізімнен шығарылған' %}
+                        ⚪ Тізімнен шығарылған
+                        {% endif %}
+                    </td>
+                    <td>{{ equipment.location }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

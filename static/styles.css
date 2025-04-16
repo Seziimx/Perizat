@@ -1,0 +1,398 @@
+/* General styles */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9; /* Light gray background */
+    color: #333; /* Dark text for contrast */
+    padding: 0;
+    flex: 1;
+}
+
+.container {
+    flex: 1;
+}
+
+/* Navigation bar */
+.navbar {
+    background-color: #ffffff; /* White background for navbar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 10px 20px;
+}
+
+.navbar a {
+    color: #333; /* Dark text for links */
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #007bff; /* Blue hover effect */
+}
+
+/* Card style */
+.card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Buttons */
+.btn {
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth animation */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.btn:hover {
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background-color: #6c757d; /* Gray button */
+    color: white;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+/* Success Button */
+.btn-success {
+    background-color: #28a745; /* Green button */
+    color: white;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Danger Button */
+.btn-danger {
+    background-color: #dc3545; /* Red button */
+    color: white;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Form inputs */
+input, select, textarea {
+    background-color: #ffffff; /* White input background */
+    border: 1px solid #ccc;
+    color: #333;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue glow on focus */
+}
+
+/* Footer */
+.footer {
+    background-color: #f1f1f1; /* Light gray background */
+    color: #333; /* Dark text */
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    margin-top: auto;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow at the top */
+}
+
+.footer .newsletter-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.footer .newsletter-form .txtb {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    width: 60%;
+}
+
+.footer .newsletter-form .btn {
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.footer .newsletter-form .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #f1f1f1; /* Light gray background */
+    color: #333; /* Dark text */
+    padding: 50px 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+footer .left-col, footer .right-col {
+    flex: 1;
+    margin: 10px;
+}
+
+footer .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+footer .logo a {
+    text-decoration: none;
+    color: #333; /* Dark text */
+}
+
+footer .logo-circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #007bff; /* Blue */
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+footer .social-media a {
+    color: #333; /* Dark text */
+    margin-right: 10px;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+footer .social-media a:hover {
+    color: #007bff; /* Blue hover effect */
+}
+
+footer .left-text {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+footer .right-col h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+footer .right-col .border {
+    width: 50px;
+    height: 2px;
+    background-color: #007bff; /* Blue */
+    margin-bottom: 10px;
+}
+
+footer .newsletter-form {
+    display: flex;
+    flex-direction: column;
+}
+
+footer .newsletter-form .txtb {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+footer .newsletter-form .btn1 {
+    padding: 10px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+footer .newsletter-form .btn1:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Feedback Form */
+.feedback-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.feedback-form .txtb {
+    background-color: #ffffff; /* White input background */
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    width: 60%;
+}
+
+.feedback-form .btn {
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.feedback-form .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Flash messages */
+.flash-messages {
+    margin-top: 20px;
+}
+
+.flash {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.flash-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.flash-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Panels and Summary Sections */
+.bg-primary, .bg-success, .bg-danger {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px;
+    color: white;
+}
+
+.bg-primary {
+    background-color: #007bff; /* Blue */
+}
+
+.bg-success {
+    background-color: #28a745; /* Green */
+}
+
+.bg-danger {
+    background-color: #dc3545; /* Red */
+}
+
+/* Tables */
+.table {
+    background-color: #ffffff; /* White table background */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9; /* Light gray for striped rows */
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #ffffff; /* White for even rows */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1; /* Light gray on hover */
+}
+
+/* Remove card-like appearance */
+.mt-4 {
+    margin-top: 0 !important;
+}
+
+/* Error Message */
+.alert {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+    }
+
+    .navbar-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer {
+        text-align: center;
+    }
+}
