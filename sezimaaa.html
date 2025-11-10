@@ -1,22 +1,73 @@
 import pandas as pd
 
-# Загружаем Excel
-df = pd.read_excel("scopus_2019.xlsm")
+# Загружаем Excel-файл (все листы можно указать sheet_name при необходимости)
+df = pd.read_excel("scopus_2019.xlsm", dtype=str)
 
+# Начало HTML
 html = """
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Scopus Data</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 30px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background-color: #f2f2f2; }
+  tr:hover { background-color: #f9f9f9; }
+  button { margin: 2px 4px; padding: 4px 10px; cursor: pointer; }
+  .copy-btn { background-color: #4CAF50; color: white; border: none; }
+  .open-btn { background-color: #2196F3; color: white; border: none; }
+</style>
+
 <script>
 function copyText(id) {
   const text = document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text);
+  navigator.clipboard.writeText(text)
+    .then(() => alert('Текст скопирован!'))
+    .catch(() => alert('Ошибка копирования'));
 }
 </script>
+</head>
+<body>
+<h2>Scopus Data</h2>
+<table>
+<thead>
+<tr>
 """
 
-for i, text in enumerate(df['H'], start=1):
+# Добавляем заголовки таблицы
+for col in df.columns:
+    html += f"<th>{col}</th>"
+html += "<th>Действия</th></tr></thead><tbody>"
+
+# Добавляем данные построчно
+for i, row in df.iterrows():
+    html += "<tr>"
+    for value in row:
+        html += f"<td>{'' if pd.isna(value) else value}</td>"
+    # добавляем кнопки: open и copy
+    link = row['E'] if 'E' in df.columns else ""
+    text_to_copy = row['H'] if 'H' in df.columns else ""
     html += f"""
-<div style="display:none" id="text{i}">{text}</div>
-<button onclick="copyText('text{i}')">Копировать</button>
+    <td>
+        <a href="{link}" target="_blank"><button class="open-btn">Open</button></a>
+        <div id="copy{i}" style="display:none;">{text_to_copy}</div>
+        <button class="copy-btn" onclick="copyText('copy{i}')">Copy</button>
+    </td>
+    """
+    html += "</tr>"
+
+html += """
+</tbody>
+</table>
+</body>
+</html>
 """
 
+# Сохраняем в файл
 with open("result.html", "w", encoding="utf-8") as f:
     f.write(html)
+
+print("✅ Файл 'result.html' успешно создан!")
